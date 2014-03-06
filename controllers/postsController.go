@@ -1,7 +1,7 @@
 package controllers
 
 import (
-  "PD.GoBlog/models"
+  "github.com/phantomdata/go-blog/models"
 )
 
 type PostsController struct {

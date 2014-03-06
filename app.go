@@ -1,8 +1,8 @@
 package main
 
 import (
-  "PD.GoBlog/controllers"
-  "PD.GoBlog/models"
+  "github.com/phantomdata/go-blog/controllers"
+  "github.com/phantomdata/go-blog/models"
   "github.com/codegangsta/martini"
   "github.com/codegangsta/martini-contrib/binding"
   "github.com/codegangsta/martini-contrib/render"
@@ -20,6 +20,7 @@ func main() {
     Layout:    "layout",
   }))
   m.Use(PopulateAppContext)
+  m.Use(CloseDatabase)
   m.Use(martini.Static("public"))
 
   m.Get("/",                                        postsController.Index)
@@ -27,6 +28,11 @@ func main() {
   m.Post("/posts/new", binding.Form(models.Post{}), postsController.Create)
 
   log.Fatal(http.ListenAndServe("192.168.1.60:8080", m))
+}
+
+func CloseDatabase(martiniContext martini.Context, appContext *models.AppContext) {
+  martiniContext.Next()
+  appContext.DbContext.Dbmap.Db.Close()
 }
 
 func PopulateAppContext(martiniContext martini.Context, w http.ResponseWriter, request *http.Request, renderer render.Render) {
