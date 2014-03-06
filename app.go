@@ -4,6 +4,7 @@ import (
   "PD.GoBlog/controllers"
   "PD.GoBlog/models"
   "github.com/codegangsta/martini"
+  "github.com/codegangsta/martini-contrib/binding"
   "github.com/codegangsta/martini-contrib/render"
   "log"
   "net/http"
@@ -21,8 +22,9 @@ func main() {
   m.Use(PopulateAppContext)
   m.Use(martini.Static("public"))
 
-  m.Get("/", postsController.Index)
-  m.Get("/posts/new", postsController.New)
+  m.Get("/",                                        postsController.Index)
+  m.Get("/posts/new",                               postsController.New)
+  m.Post("/posts/new", binding.Form(models.Post{}), postsController.Create)
 
   log.Fatal(http.ListenAndServe("192.168.1.60:8080", m))
 }

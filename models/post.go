@@ -5,9 +5,9 @@ import (
 )
 
 type Post struct {
-  Id             int64 `db:"Id"`
-  Content        string
-  Title          string
+  Id             int64  `db:"Id"`
+  Content        string `form:"content"`
+  Title          string `form:"title"`
 
   CreatedAt      time.Time
   PublishedAt    time.Time
